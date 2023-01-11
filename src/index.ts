@@ -1,10 +1,6 @@
-import { createServer } from 'http';
 import * as dotenv from 'dotenv';
+import { startServer } from './http/users.router';
 
 dotenv.config();
 
-createServer((_request, response) => {
-    response.writeHead(200, { 'Content-type': 'text/plain' });
-
-    response.end('Hello World');
-}).listen(process.env['APP_PORT']);
+startServer();
