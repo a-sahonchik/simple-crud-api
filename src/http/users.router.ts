@@ -1,7 +1,11 @@
 import http from 'node:http';
 import url from 'node:url';
 import { validate } from 'uuid';
-import { findAllUsers, findUserById } from '../components/users/users.service';
+import { users, findAllUsers, findUserById } from '../components/users/users.service';
+import { User } from '../components/users/user.entity';
+import { validateUserProperties } from '../validator/validateUserProperties';
+import { validateRequestKeys } from '../validator/validateRequestKeys';
+import { getRequestBody } from './requestService';
 
 const requestMethods = {
     GET: 'GET',
@@ -11,10 +15,10 @@ const requestMethods = {
 };
 
 const REGEXP_FLAG_GMI = 'gmi';
-
 const usersWithUuidRegexp = new RegExp('\\/users\\/([^\\s\\/]+)', REGEXP_FLAG_GMI);
 
 const isGet = (method: string) => method === requestMethods.GET;
+const isPost = (method: string) => method === requestMethods.POST;
 
 const handler = async (request: http.IncomingMessage, response: http.ServerResponse) => {
     // @ts-ignore
@@ -40,10 +44,28 @@ const handler = async (request: http.IncomingMessage, response: http.ServerRespo
     } else if (pathname === '/users' && isGet(requestMethod)) {
         response.writeHead(200, { 'Content-type': 'application/json' });
         response.end(JSON.stringify(await findAllUsers()));
-    } else if (pathname.match(usersWithUuidRegexp) && isUuidValid && isGet(requestMethod)) {
-        let user = null;
+    } else if (pathname === '/users' && isPost(requestMethod)) {
+        const requestBody = await getRequestBody(request);
 
-        user = await findUserById(uuid);
+        try {
+            const parsedRequestBody = JSON.parse(requestBody);
+
+            validateRequestKeys(parsedRequestBody);
+
+            const user = new User(parsedRequestBody.username, parsedRequestBody.age, parsedRequestBody.hobbies);
+
+            validateUserProperties(user);
+
+            users.push(user);
+
+            response.writeHead(200, { 'Content-type': 'application/json' });
+            response.end(JSON.stringify(user));
+        } catch (e) {
+            response.writeHead(400, { 'Content-type': 'text/plain' });
+            response.end('Invalid request body.');
+        }
+    } else if (pathname.match(usersWithUuidRegexp) && isUuidValid && isGet(requestMethod)) {
+        const user = await findUserById(uuid);
 
         if (user !== null) {
             response.writeHead(200, { 'Content-type': 'application/json' });
@@ -52,7 +74,7 @@ const handler = async (request: http.IncomingMessage, response: http.ServerRespo
             response.writeHead(404, { 'Content-type': 'text/plain' });
             response.end(`User with uuid ${uuid} does not exist.`);
         }
-    } else if (pathname.match(usersWithUuidRegexp) && !isUuidValid && isGet(requestMethod)) {
+    } else if (pathname.match(usersWithUuidRegexp) && !isUuidValid) {
         response.writeHead(400, { 'Content-type': 'text/plain' });
         response.end('User\'s uuid is not valid.');
     } else {
