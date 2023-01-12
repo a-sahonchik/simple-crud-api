@@ -1,21 +1,63 @@
 import http from 'node:http';
 import url from 'node:url';
-import { findAllUsers } from '../components/users/users.service';
+import { validate } from 'uuid';
+import { findAllUsers, findUserById } from '../components/users/users.service';
+
+const requestMethods = {
+    GET: 'GET',
+    POST: 'POST',
+    PUT: 'PUT',
+    DELETE: 'DELETE',
+};
+
+const REGEXP_FLAG_GMI = 'gmi';
+
+const usersWithUuidRegexp = new RegExp('\\/users\\/([^\\s\\/]+)', REGEXP_FLAG_GMI);
+
+const isGet = (method: string) => method === requestMethods.GET;
 
 const handler = async (request: http.IncomingMessage, response: http.ServerResponse) => {
     // @ts-ignore
     const parsedUrl = url.parse(request.url, true);
+    const { pathname } = parsedUrl;
+    const requestMethod = request.method;
 
-    if (parsedUrl.pathname === '/') {
+    if (pathname === null) {
+        throw new Error('Pathname can not be null.');
+    }
+
+    if (!requestMethod) {
+        throw new Error('Request method must be defined.');
+    }
+
+    const uuid = pathname.split('/').slice(-1).toString();
+
+    const isUuidValid = validate(uuid);
+
+    if (pathname === '/' && isGet(requestMethod)) {
         response.writeHead(200, { 'Content-type': 'text/plain' });
-        response.write('Hello, World!');
-        response.end();
-    } else if (parsedUrl.pathname === '/users') {
+        response.end('Hello, World!');
+    } else if (pathname === '/users' && isGet(requestMethod)) {
         response.writeHead(200, { 'Content-type': 'application/json' });
         response.end(JSON.stringify(await findAllUsers()));
+    } else if (pathname.match(usersWithUuidRegexp) && isUuidValid && isGet(requestMethod)) {
+        let user = null;
+
+        user = await findUserById(uuid);
+
+        if (user !== null) {
+            response.writeHead(200, { 'Content-type': 'application/json' });
+            response.end(JSON.stringify(user));
+        } else {
+            response.writeHead(404, { 'Content-type': 'text/plain' });
+            response.end(`User with uuid ${uuid} does not exist.`);
+        }
+    } else if (pathname.match(usersWithUuidRegexp) && !isUuidValid && isGet(requestMethod)) {
+        response.writeHead(400, { 'Content-type': 'text/plain' });
+        response.end('User\'s uuid is not valid.');
     } else {
         response.writeHead(404, { 'Content-type': 'text/plain' });
-        response.end();
+        response.end('This page doesn\'t exist.');
     }
 };
 
