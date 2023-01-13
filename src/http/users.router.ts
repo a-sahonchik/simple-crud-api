@@ -58,7 +58,7 @@ const handler = async (request: http.IncomingMessage, response: http.ServerRespo
 
             users.push(user);
 
-            response.writeHead(200, { 'Content-type': 'application/json' });
+            response.writeHead(201, { 'Content-type': 'application/json' });
             response.end(JSON.stringify(user));
         } catch (e) {
             response.writeHead(400, { 'Content-type': 'text/plain' });
