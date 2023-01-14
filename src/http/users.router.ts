@@ -19,6 +19,7 @@ const usersWithUuidRegexp = new RegExp('\\/users\\/([^\\s\\/]+)', REGEXP_FLAG_GM
 
 const isGet = (method: string) => method === requestMethods.GET;
 const isPost = (method: string) => method === requestMethods.POST;
+const isPut = (method: string) => method === requestMethods.PUT;
 
 const handler = async (request: http.IncomingMessage, response: http.ServerResponse) => {
     // @ts-ignore
@@ -70,6 +71,41 @@ const handler = async (request: http.IncomingMessage, response: http.ServerRespo
         if (user !== null) {
             response.writeHead(200, { 'Content-type': 'application/json' });
             response.end(JSON.stringify(user));
+        } else {
+            response.writeHead(404, { 'Content-type': 'text/plain' });
+            response.end(`User with uuid ${uuid} does not exist.`);
+        }
+    } else if (pathname.match(usersWithUuidRegexp) && isUuidValid && isPut(requestMethod)) {
+        const user = await findUserById(uuid);
+
+        if (user !== null) {
+            try {
+                const requestBody = await getRequestBody(request);
+                const parsedRequestBody = JSON.parse(requestBody);
+
+                validateRequestKeys(parsedRequestBody);
+
+                const updatedUser = new User(
+                    parsedRequestBody.username,
+                    parsedRequestBody.age,
+                    parsedRequestBody.hobbies,
+                    uuid,
+                );
+
+                validateUserProperties(updatedUser);
+
+                const userIndex = users.indexOf(user);
+
+                if (userIndex !== -1) {
+                    users[userIndex] = updatedUser;
+                }
+
+                response.writeHead(200, { 'Content-type': 'application/json' });
+                response.end(JSON.stringify(updatedUser));
+            } catch (e) {
+                response.writeHead(400, { 'Content-type': 'text/plain' });
+                response.end('Invalid request body.');
+            }
         } else {
             response.writeHead(404, { 'Content-type': 'text/plain' });
             response.end(`User with uuid ${uuid} does not exist.`);

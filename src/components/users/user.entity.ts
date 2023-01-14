@@ -10,8 +10,8 @@ class User implements IUser {
 
     public hobbies: string[];
 
-    constructor(username: string, age: number, hobbies: string[]) {
-        this.id = uuid();
+    constructor(username: string, age: number, hobbies: string[], id: string = uuid()) {
+        this.id = id;
         this.username = username;
         this.age = age;
         this.hobbies = hobbies;
