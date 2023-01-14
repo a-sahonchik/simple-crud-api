@@ -20,6 +20,7 @@ const usersWithUuidRegexp = new RegExp('\\/users\\/([^\\s\\/]+)', REGEXP_FLAG_GM
 const isGet = (method: string) => method === requestMethods.GET;
 const isPost = (method: string) => method === requestMethods.POST;
 const isPut = (method: string) => method === requestMethods.PUT;
+const isDelete = (method: string) => method === requestMethods.DELETE;
 
 const handler = async (request: http.IncomingMessage, response: http.ServerResponse) => {
     // @ts-ignore
@@ -106,6 +107,22 @@ const handler = async (request: http.IncomingMessage, response: http.ServerRespo
                 response.writeHead(400, { 'Content-type': 'text/plain' });
                 response.end('Invalid request body.');
             }
+        } else {
+            response.writeHead(404, { 'Content-type': 'text/plain' });
+            response.end(`User with uuid ${uuid} does not exist.`);
+        }
+    } else if (pathname.match(usersWithUuidRegexp) && isUuidValid && isDelete(requestMethod)) {
+        const user = await findUserById(uuid);
+
+        if (user !== null) {
+            const userIndex = users.indexOf(user);
+
+            if (userIndex !== -1) {
+                users.splice(userIndex, 1);
+            }
+
+            response.writeHead(200, { 'Content-type': 'application/json' });
+            response.end(`User ${uuid} was deleted successfully.`);
         } else {
             response.writeHead(404, { 'Content-type': 'text/plain' });
             response.end(`User with uuid ${uuid} does not exist.`);
