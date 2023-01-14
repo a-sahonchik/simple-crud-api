@@ -4,7 +4,7 @@
   "description": "Simple CRUD API",
   "main": "index.ts",
   "scripts": {
-    "start:dev": "nodemon",
+    "start:dev": "nodemon --inspect",
     "start:prod": "webpack --mode=production --node-env=production && node build/bundle.js",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",

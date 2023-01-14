@@ -28,4 +28,28 @@ const findUserById = async (id: string): Promise<IUser | null> => {
     return user || null;
 };
 
-export { users, findAllUsers, findUserById };
+const updateUser = async (user: IUser, newUser: IUser): Promise<IUser> => {
+    const userIndex = users.indexOf(user);
+
+    users[userIndex] = newUser;
+
+    return newUser;
+};
+
+const deleteUser = async (user: IUser): Promise<void> => {
+    const userIndex = users.indexOf(user);
+
+    users.splice(userIndex, 1);
+};
+
+const createUser = async (user: IUser): Promise<void> => {
+    users.push(user);
+};
+
+export {
+    findAllUsers,
+    findUserById,
+    updateUser,
+    deleteUser,
+    createUser,
+};
