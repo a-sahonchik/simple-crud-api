@@ -3,7 +3,7 @@ const path = require('path');
 const isProduction = process.env.NODE_ENV === 'production';
 
 const config = {
-    entry: './src/user.properties.validator.ts',
+    entry: './src/index.ts',
     output: {
         filename: 'bundle.js',
         path: path.resolve(__dirname, 'build'),

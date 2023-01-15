@@ -4,6 +4,8 @@ import { ActionHandler } from '../http/ActionHandler';
 import { Request } from '../http/Request';
 import { Response } from '../http/Response';
 import { validateUuid } from '../validator/validateUuid';
+import { UserNotFoundError } from '../errors/types/UserNotFoundError';
+import { USER_NOT_FOUND } from '../components/messages/errorMessages';
 
 const deleteUserAction: ActionHandler = async (request: Request, response: Response): Promise<void> => {
     const uuid = request.getUuid();
@@ -13,8 +15,7 @@ const deleteUserAction: ActionHandler = async (request: Request, response: Respo
     const user = await findUserById(uuid);
 
     if (user === null) {
-        response.sendResponse(httpConstants.HTTP_STATUS_NOT_FOUND, `User with uuid ${uuid} does not exist.`);
-        return;
+        throw new UserNotFoundError(USER_NOT_FOUND);
     }
 
     await deleteUser(user);

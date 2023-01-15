@@ -4,6 +4,8 @@ import { ActionHandler } from '../http/ActionHandler';
 import { Request } from '../http/Request';
 import { Response } from '../http/Response';
 import { validateUuid } from '../validator/validateUuid';
+import { UserNotFoundError } from '../errors/types/UserNotFoundError';
+import { USER_NOT_FOUND } from '../components/messages/errorMessages';
 
 const getUserAction: ActionHandler = async (request: Request, response: Response): Promise<void> => {
     const uuid = request.getUuid();
@@ -13,7 +15,7 @@ const getUserAction: ActionHandler = async (request: Request, response: Response
     const user = await findUserById(uuid);
 
     if (user === null) {
-        response.sendResponse(httpConstants.HTTP_STATUS_NOT_FOUND, `User with uuid ${uuid} does not exist.`);
+        throw new UserNotFoundError(USER_NOT_FOUND);
     } else {
         response.sendResponse(httpConstants.HTTP_STATUS_OK, JSON.stringify(user));
     }

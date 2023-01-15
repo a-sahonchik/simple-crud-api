@@ -8,6 +8,8 @@ import { validateRequestKeys } from '../validator/validateRequestKeys';
 import { User } from '../components/users/user.entity';
 import { validateUserProperties } from '../validator/validateUserProperties';
 import { validateUuid } from '../validator/validateUuid';
+import { UserNotFoundError } from '../errors/types/UserNotFoundError';
+import { USER_NOT_FOUND } from '../components/messages/errorMessages';
 
 const updateUserAction: ActionHandler = async (request: Request, response: Response): Promise<void> => {
     const uuid = request.getUuid();
@@ -17,8 +19,7 @@ const updateUserAction: ActionHandler = async (request: Request, response: Respo
     const user = await findUserById(uuid);
 
     if (user === null) {
-        response.sendResponse(httpConstants.HTTP_STATUS_NOT_FOUND, `User with uuid ${uuid} does not exist.`);
-        return;
+        throw new UserNotFoundError(USER_NOT_FOUND);
     }
 
     const requestBody = await getRequestBody(request);

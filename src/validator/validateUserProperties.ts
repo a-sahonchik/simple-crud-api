@@ -1,5 +1,5 @@
 import { User } from '../components/users/user.entity';
-import { ValidationError } from './ValidationError';
+import { ValidationError } from '../errors/types/ValidationError';
 import { ValidationRule } from './rules/ValidationRule';
 import { IsRequired } from './rules/IsRequired';
 import { IsTypeOf } from './rules/IsTypeOf';
@@ -54,7 +54,7 @@ const validateUserProperties = (user: User): void => {
     });
 
     if (validationErrors.length > 0) {
-        throw new Error('Error on validation user properties.');
+        throw new ValidationError(validationErrors.map((error) => error.message).join('; '));
     }
 };
 

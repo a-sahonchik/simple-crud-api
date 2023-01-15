@@ -1,5 +1,5 @@
 import { ValidationRule } from './ValidationRule';
-import { ValidationError } from '../ValidationError';
+import { ValidationError } from '../../errors/types/ValidationError';
 
 class IsTypeOf implements ValidationRule {
     private readonly type: string;
@@ -10,7 +10,7 @@ class IsTypeOf implements ValidationRule {
 
     validateProperty(propertyName: string, propertyValue: any): ValidationError[] {
         if (typeof propertyValue !== this.type) {
-            return [new ValidationError(`Property "${propertyName}" must be of type ${this.type}.`)];
+            return [new ValidationError(`Property "${propertyName}" must be of type ${this.type}`)];
         }
 
         return [];

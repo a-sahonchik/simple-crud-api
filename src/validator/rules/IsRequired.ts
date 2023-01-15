@@ -1,10 +1,10 @@
 import { ValidationRule } from './ValidationRule';
-import { ValidationError } from '../ValidationError';
+import { ValidationError } from '../../errors/types/ValidationError';
 
 class IsRequired implements ValidationRule {
     validateProperty(propertyName: string, propertyValue: any): ValidationError[] {
         if (propertyValue === undefined || propertyValue === null) {
-            return [new ValidationError(`Property "${propertyName}" is required.`)];
+            return [new ValidationError(`Property "${propertyName}" is required`)];
         }
 
         return [];
