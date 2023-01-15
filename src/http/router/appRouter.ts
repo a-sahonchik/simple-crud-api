@@ -1,11 +1,11 @@
 import http from 'node:http';
-import { Request } from './Request';
-import { Response } from './Response';
-import { transformRequestPathToEndpoint } from './pathTransformer';
-import { userRouter } from './usersRouter';
-import { handleErrors } from '../errors/errorHandler';
-import { HttpNotFoundError } from '../errors/types/HttpNotFoundError';
-import { PAGE_NOT_FOUND } from '../components/messages/errorMessages';
+import { Request } from '../Request';
+import { Response } from '../Response';
+import { transformRequestPathToEndpoint } from '../../utils/pathTransformer';
+import { userRouter } from '../usersRouter';
+import { handleErrors } from '../../utils/errorHandler';
+import { HttpNotFoundError } from '../../errors/types/HttpNotFoundError';
+import { PAGE_NOT_FOUND } from '../../components/messages/errorMessages';
 
 const handle = async (request: Request, response: Response): Promise<void> => {
     const method = request.getMethod();
@@ -34,7 +34,7 @@ const handle = async (request: Request, response: Response): Promise<void> => {
     }
 };
 
-const startServer = () => {
+const startServer = (port: number) => {
     const server = http.createServer(
         { IncomingMessage: Request, ServerResponse: Response },
         async (request: Request, response: Response) => {
@@ -44,7 +44,7 @@ const startServer = () => {
                 await handleErrors(error as Error, response);
             }
         },
-    ).listen(process.env['APP_PORT']);
+    ).listen(port);
 
     return server;
 };

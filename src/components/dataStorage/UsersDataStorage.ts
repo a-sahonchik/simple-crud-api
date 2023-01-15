@@ -1,5 +1,7 @@
+import cluster from 'node:cluster';
 import { User } from '../users/user.entity';
 import { IUser } from '../users/user.interface';
+import { MultiDataStorage } from './MultiDataStorage';
 
 class UsersDataStorage {
     private users: User[] = [];
@@ -35,6 +37,6 @@ class UsersDataStorage {
     };
 }
 
-const usersDataStorage = new UsersDataStorage();
+const usersDataStorage = cluster.isWorker ? new MultiDataStorage() : new UsersDataStorage();
 
 export { usersDataStorage };

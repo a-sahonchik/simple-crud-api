@@ -35,7 +35,11 @@ class Request extends IncomingMessage {
     }
 
     public getUuid(): string {
-        const pathname = this.getPathname();
+        let pathname = this.getPathname();
+
+        if (pathname.endsWith('/')) {
+            pathname = pathname.slice(0, -1);
+        }
 
         const uuid = pathname.split('/').slice(-1).toString();
 

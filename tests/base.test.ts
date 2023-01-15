@@ -1,8 +1,8 @@
 import { constants as httpConstants } from 'http2';
 import supertest from 'supertest';
-import { startServer } from '../src/http/appRouter';
+import { startServer } from '../src/http/router/appRouter';
 
-const request = supertest(startServer());
+const request = supertest(startServer(4000));
 
 describe('Base behavior', () => {
     describe('non-existent endpoint', () => {

@@ -9,32 +9,32 @@ import { updateUserAction } from '../controller/user/updateUserAction';
 
 const userRouter = new Router([
     {
-        path: '/',
+        path: '/api',
         method: HttpRequestMethod.GET,
         handler: getHomePageAction,
     },
     {
-        path: '/users',
+        path: '/api/users',
         method: HttpRequestMethod.GET,
         handler: getUsersAction,
     },
     {
-        path: '/users/:id',
+        path: '/api/users/:id',
         method: HttpRequestMethod.GET,
         handler: getUserAction,
     },
     {
-        path: '/users',
+        path: '/api/users',
         method: HttpRequestMethod.POST,
         handler: createUserAction,
     },
     {
-        path: '/users/:id',
+        path: '/api/users/:id',
         method: HttpRequestMethod.PUT,
         handler: updateUserAction,
     },
     {
-        path: '/users/:id',
+        path: '/api/users/:id',
         method: HttpRequestMethod.DELETE,
         handler: deleteUserAction,
     },

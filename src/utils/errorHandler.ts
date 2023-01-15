@@ -1,10 +1,10 @@
 import { constants as httpConstants } from 'node:http2';
 import { Response } from '../http/Response';
-import { UserNotFoundError } from './types/UserNotFoundError';
-import { InvalidUuidError } from './types/InvalidUuidError';
-import { HttpBadRequestError } from './types/HttpBadRequestError';
-import { ValidationError } from './types/ValidationError';
-import { HttpNotFoundError } from './types/HttpNotFoundError';
+import { UserNotFoundError } from '../errors/types/UserNotFoundError';
+import { InvalidUuidError } from '../errors/types/InvalidUuidError';
+import { HttpBadRequestError } from '../errors/types/HttpBadRequestError';
+import { ValidationError } from '../errors/types/ValidationError';
+import { HttpNotFoundError } from '../errors/types/HttpNotFoundError';
 import { INTERNAL_SERVER_ERROR } from '../components/messages/errorMessages';
 
 const handleErrors = async (error: Error, response: Response) => {

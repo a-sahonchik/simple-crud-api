@@ -4,8 +4,12 @@ const usersWithUuidRegexp = new RegExp('\\/users\\/([^\\/]+)(\\/$|$)', REGEXP_FL
 const transformRequestPathToEndpoint = (path: string): string => {
     let transformedPath = path;
 
+    if (transformedPath.endsWith('/')) {
+        transformedPath = transformedPath.slice(0, -1);
+    }
+
     if (path.match(usersWithUuidRegexp)) {
-        transformedPath = '/users/:id';
+        transformedPath = '/api/users/:id';
     }
 
     return transformedPath;

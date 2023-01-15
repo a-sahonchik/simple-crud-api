@@ -1,10 +1,10 @@
 import { constants as httpConstants } from 'http2';
 import { v4 as uuid } from 'uuid';
 import supertest from 'supertest';
-import { startServer } from '../src/http/appRouter';
+import { startServer } from '../src/http/router/appRouter';
 import { usersDataStorage } from '../src/components/dataStorage/UsersDataStorage';
 
-const request = supertest(startServer());
+const request = supertest(startServer(4001));
 
 afterEach(async () => {
     await usersDataStorage.clearAll();
@@ -19,7 +19,7 @@ describe('User CRUD', () => {
                 hobbies: ['reading'],
             };
 
-            const response = await request.post('/users').send(userRequest);
+            const response = await request.post('/api/users').send(userRequest);
 
             expect(response.status).toBe(httpConstants.HTTP_STATUS_CREATED);
 
@@ -40,7 +40,7 @@ describe('User CRUD', () => {
                 aa: 'aa',
             };
 
-            const response = await request.post('/users').send(userRequest);
+            const response = await request.post('/api/users').send(userRequest);
 
             expect(response.status).toBe(httpConstants.HTTP_STATUS_BAD_REQUEST);
 
@@ -57,7 +57,7 @@ describe('User CRUD', () => {
                 age: 15,
             };
 
-            const response = await request.post('/users').send(userRequest);
+            const response = await request.post('/api/users').send(userRequest);
 
             expect(response.status).toBe(httpConstants.HTTP_STATUS_BAD_REQUEST);
 
@@ -75,7 +75,7 @@ describe('User CRUD', () => {
                 hobbies: 'no',
             };
 
-            const response = await request.post('/users').send(userRequest);
+            const response = await request.post('/api/users').send(userRequest);
 
             expect(response.status).toBe(httpConstants.HTTP_STATUS_BAD_REQUEST);
 
@@ -93,7 +93,7 @@ describe('User CRUD', () => {
 
     describe('GET /users', () => {
         it('should return empty list of all users when db is empty', async () => {
-            const response = await request.get('/users');
+            const response = await request.get('/api/users');
 
             expect(response.status).toBe(httpConstants.HTTP_STATUS_OK);
             expect(response.body).toEqual([]);
@@ -106,13 +106,13 @@ describe('User CRUD', () => {
                 hobbies: ['reading'],
             };
 
-            const response1 = await request.post('/users').send(userRequest);
+            const response1 = await request.post('/api/users').send(userRequest);
 
             expect(response1.status).toBe(httpConstants.HTTP_STATUS_CREATED);
             const createdUserId = response1.body.id;
             const createdUser = await usersDataStorage.findUserById(createdUserId);
 
-            const response2 = await request.get('/users');
+            const response2 = await request.get('/api/users');
 
             expect(response2.status).toBe(httpConstants.HTTP_STATUS_OK);
             expect(response2.body).toEqual([createdUser]);
@@ -131,7 +131,7 @@ describe('User CRUD', () => {
                 hobbies: ['reading'],
             };
 
-            const response1 = await request.post('/users').send(userRequest);
+            const response1 = await request.post('/api/users').send(userRequest);
 
             expect(response1.status).toBe(httpConstants.HTTP_STATUS_CREATED);
 
@@ -152,7 +152,7 @@ describe('User CRUD', () => {
         });
 
         it('should return error if uuid is not valid', async () => {
-            const response = await request.get('/users/1234567890');
+            const response = await request.get('/api/users/1234567890');
 
             expect(response.status).toBe(httpConstants.HTTP_STATUS_BAD_REQUEST);
             expect(response.body).toEqual('User\'s uuid is not valid.');
@@ -167,7 +167,7 @@ describe('User CRUD', () => {
                 hobbies: ['reading'],
             };
 
-            const response1 = await request.post('/users').send(userRequest);
+            const response1 = await request.post('/api/users').send(userRequest);
 
             expect(response1.status).toBe(httpConstants.HTTP_STATUS_CREATED);
 
@@ -198,7 +198,7 @@ describe('User CRUD', () => {
                 hobbies: ['reading'],
             };
 
-            const response1 = await request.post('/users').send(userRequest);
+            const response1 = await request.post('/api/users').send(userRequest);
 
             expect(response1.status).toBe(httpConstants.HTTP_STATUS_CREATED);
 
@@ -230,7 +230,7 @@ describe('User CRUD', () => {
                 hobbies: ['reading'],
             };
 
-            const response1 = await request.post('/users').send(userRequest);
+            const response1 = await request.post('/api/users').send(userRequest);
 
             expect(response1.status).toBe(httpConstants.HTTP_STATUS_CREATED);
 
@@ -259,7 +259,7 @@ describe('User CRUD', () => {
                 hobbies: ['reading'],
             };
 
-            const response1 = await request.post('/users').send(userRequest);
+            const response1 = await request.post('/api/users').send(userRequest);
 
             expect(response1.status).toBe(httpConstants.HTTP_STATUS_CREATED);
 
@@ -295,7 +295,7 @@ describe('User CRUD', () => {
         });
 
         it('should return error if uuid is not valid', async () => {
-            const response = await request.put('/users/1234567890');
+            const response = await request.put('/api/users/1234567890');
 
             expect(response.status).toBe(httpConstants.HTTP_STATUS_BAD_REQUEST);
             expect(response.body).toEqual('User\'s uuid is not valid.');
@@ -310,7 +310,7 @@ describe('User CRUD', () => {
                 hobbies: ['reading'],
             };
 
-            const response1 = await request.post('/users').send(userRequest);
+            const response1 = await request.post('/api/users').send(userRequest);
 
             expect(response1.status).toBe(httpConstants.HTTP_STATUS_CREATED);
 
@@ -333,7 +333,7 @@ describe('User CRUD', () => {
         });
 
         it('should return error if uuid is not valid', async () => {
-            const response = await request.delete('/users/1234567890');
+            const response = await request.delete('/api/users/1234567890');
 
             expect(response.status).toBe(httpConstants.HTTP_STATUS_BAD_REQUEST);
             expect(response.body).toEqual('User\'s uuid is not valid.');
