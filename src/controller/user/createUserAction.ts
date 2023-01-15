@@ -1,12 +1,12 @@
 import { constants as httpConstants } from 'node:http2';
-import { ActionHandler } from '../http/ActionHandler';
-import { Request } from '../http/Request';
-import { Response } from '../http/Response';
-import { getRequestBody } from '../http/requestService';
-import { validateRequestKeys } from '../validator/validateRequestKeys';
-import { User } from '../components/users/user.entity';
-import { validateUserProperties } from '../validator/validateUserProperties';
-import { createUser } from '../components/users/users.service';
+import { ActionHandler } from '../../http/ActionHandler';
+import { Request } from '../../http/Request';
+import { Response } from '../../http/Response';
+import { getRequestBody } from '../../http/requestService';
+import { validateRequestKeys } from '../../validator/validateRequestKeys';
+import { User } from '../../components/users/user.entity';
+import { validateUserProperties } from '../../validator/validateUserProperties';
+import { usersDataStorage } from '../../components/dataStorage/UsersDataStorage';
 
 const createUserAction: ActionHandler = async (request: Request, response: Response): Promise<void> => {
     const requestBody = await getRequestBody(request);
@@ -19,7 +19,7 @@ const createUserAction: ActionHandler = async (request: Request, response: Respo
 
     validateUserProperties(user);
 
-    await createUser(user);
+    await usersDataStorage.createUser(user);
 
     response.sendResponse(httpConstants.HTTP_STATUS_CREATED, JSON.stringify(user));
 };

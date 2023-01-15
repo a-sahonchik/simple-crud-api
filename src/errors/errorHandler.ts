@@ -11,16 +11,19 @@ const handleErrors = async (error: Error, response: Response) => {
     switch (error.constructor) {
         case UserNotFoundError:
         case HttpNotFoundError:
-            response.sendResponse(httpConstants.HTTP_STATUS_NOT_FOUND, error.message);
+            response.sendResponse(httpConstants.HTTP_STATUS_NOT_FOUND, JSON.stringify(error.message));
             break;
         case InvalidUuidError:
         case HttpBadRequestError:
         case ValidationError:
         case SyntaxError:
-            response.sendResponse(httpConstants.HTTP_STATUS_BAD_REQUEST, error.message);
+            response.sendResponse(httpConstants.HTTP_STATUS_BAD_REQUEST, JSON.stringify(error.message));
             break;
         default:
-            response.sendResponse(httpConstants.HTTP_STATUS_INTERNAL_SERVER_ERROR, INTERNAL_SERVER_ERROR);
+            response.sendResponse(
+                httpConstants.HTTP_STATUS_INTERNAL_SERVER_ERROR,
+                JSON.stringify(INTERNAL_SERVER_ERROR),
+            );
     }
 };
 

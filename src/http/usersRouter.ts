@@ -1,11 +1,11 @@
 import { Router } from './Router';
 import { HttpRequestMethod } from '../components/constants/HttpRequestMethod';
 import { getHomePageAction } from '../controller/getHomePageAction';
-import { getUsersAction } from '../controller/getUsersAction';
-import { getUserAction } from '../controller/getUserAction';
-import { createUserAction } from '../controller/createUserAction';
-import { deleteUserAction } from '../controller/deleteUserAction';
-import { updateUserAction } from '../controller/updateUserAction';
+import { getUsersAction } from '../controller/user/getUsersAction';
+import { getUserAction } from '../controller/user/getUserAction';
+import { createUserAction } from '../controller/user/createUserAction';
+import { deleteUserAction } from '../controller/user/deleteUserAction';
+import { updateUserAction } from '../controller/user/updateUserAction';
 
 const userRouter = new Router([
     {
