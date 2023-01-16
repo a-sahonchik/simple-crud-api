@@ -1,0 +1,412 @@
+{
+	"info": {
+		"_postman_id": "af6e023a-35b5-4d69-b6e7-1519b606dca7",
+		"name": "CRUD API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Get main API page",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:4000/api",
+					"host": [
+						"localhost"
+					],
+					"port": "4000",
+					"path": [
+						"api"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get missing page",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:4000/api/gdfgdfg",
+					"host": [
+						"localhost"
+					],
+					"port": "4000",
+					"path": [
+						"api",
+						"gdfgdfg"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get all Users",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:4000/api/users",
+					"host": [
+						"localhost"
+					],
+					"port": "4000",
+					"path": [
+						"api",
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get User by uuid",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:4000/api/users/d4188aa2-4f7c-4082-b497-4bf7cd5a82da",
+					"host": [
+						"localhost"
+					],
+					"port": "4000",
+					"path": [
+						"api",
+						"users",
+						"d4188aa2-4f7c-4082-b497-4bf7cd5a82da"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get User by non-uuid",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:4000/api/users/123434234234",
+					"host": [
+						"localhost"
+					],
+					"port": "4000",
+					"path": [
+						"api",
+						"users",
+						"123434234234"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create user",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"age\": 35,\n    \"username\": \"Alexey\",\n    \"hobbies\": [\n        \"reading\"\n    ]\n}"
+				},
+				"url": {
+					"raw": "localhost:4000/api/users",
+					"host": [
+						"localhost"
+					],
+					"port": "4000",
+					"path": [
+						"api",
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create user with broken JSON",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"age\": 35,\n    \"username\": \"Alexey\",\n    \"hobbies\": [\n        \"reading\",\n    ]\n}"
+				},
+				"url": {
+					"raw": "localhost:4000/api/users",
+					"host": [
+						"localhost"
+					],
+					"port": "4000",
+					"path": [
+						"api",
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create user with extra key",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"age\": 35,\n    \"username\": \"Alexey\",\n    \"hobbies\": [\n        \"reading\"\n    ],\n    \"aa\": 35\n}"
+				},
+				"url": {
+					"raw": "localhost:4000/api/users",
+					"host": [
+						"localhost"
+					],
+					"port": "4000",
+					"path": [
+						"api",
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create user with missing required key",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"age\": 35,\n    \"username\": \"Alexey\"\n}"
+				},
+				"url": {
+					"raw": "localhost:4000/api/users",
+					"host": [
+						"localhost"
+					],
+					"port": "4000",
+					"path": [
+						"api",
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create user with wrong types",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"age\": \"35\",\n    \"username\": [\"Alexey\"],\n    \"hobbies\": \"no\"\n}"
+				},
+				"url": {
+					"raw": "localhost:4000/api/users",
+					"host": [
+						"localhost"
+					],
+					"port": "4000",
+					"path": [
+						"api",
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update user",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"username\": \"sfdf\",\n    \"age\": 34,\n    \"hobbies\": [\n        \"hobby\"\n    ]\n}"
+				},
+				"url": {
+					"raw": "localhost:4000/api/users/6080575a-365d-4b61-b98b-af726c392a7b",
+					"host": [
+						"localhost"
+					],
+					"port": "4000",
+					"path": [
+						"api",
+						"users",
+						"6080575a-365d-4b61-b98b-af726c392a7b"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update user with broken JSON",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"age\": 35,\n    \"username\": \"Alexey\",\n    \"hobbies\": [\n        \"reading\",\n    ]\n}"
+				},
+				"url": {
+					"raw": "localhost:4000/api/users/cfb57030-6902-4d30-a9b0-dfbe35413d69",
+					"host": [
+						"localhost"
+					],
+					"port": "4000",
+					"path": [
+						"api",
+						"users",
+						"cfb57030-6902-4d30-a9b0-dfbe35413d69"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update user with extra key",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"age\": 35,\n    \"username\": \"Alexey\",\n    \"hobbies\": [\n        \"reading\"\n    ],\n    \"aa\": 35\n}"
+				},
+				"url": {
+					"raw": "localhost:4000/api/users/cfb57030-6902-4d30-a9b0-dfbe35413d69",
+					"host": [
+						"localhost"
+					],
+					"port": "4000",
+					"path": [
+						"api",
+						"users",
+						"cfb57030-6902-4d30-a9b0-dfbe35413d69"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update user with missing required key",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"age\": 35,\n    \"username\": \"Alexey\"\n}"
+				},
+				"url": {
+					"raw": "localhost:4000/api/users/cfb57030-6902-4d30-a9b0-dfbe35413d69",
+					"host": [
+						"localhost"
+					],
+					"port": "4000",
+					"path": [
+						"api",
+						"users",
+						"cfb57030-6902-4d30-a9b0-dfbe35413d69"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update user with wrong types",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"age\": \"35\",\n    \"username\": [\"Alexey\"],\n    \"hobbies\": \"no\"\n}"
+				},
+				"url": {
+					"raw": "localhost:4000/api/users/cfb57030-6902-4d30-a9b0-dfbe35413d69",
+					"host": [
+						"localhost"
+					],
+					"port": "4000",
+					"path": [
+						"api",
+						"users",
+						"cfb57030-6902-4d30-a9b0-dfbe35413d69"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update user by non-uuid id",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"username\": \"user 2\",\n    \"age\": 12,\n    \"hobbies\": [\n        \"painting\",\n        \"reading\"\n    ]\n}"
+				},
+				"url": {
+					"raw": "localhost:4000/api/users/5646456456",
+					"host": [
+						"localhost"
+					],
+					"port": "4000",
+					"path": [
+						"api",
+						"users",
+						"5646456456"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete user",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "localhost:4000/api/users/317c74e1-c889-46b8-ae31-6ed726689a4a",
+					"host": [
+						"localhost"
+					],
+					"port": "4000",
+					"path": [
+						"api",
+						"users",
+						"317c74e1-c889-46b8-ae31-6ed726689a4a"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete user by non-uuid id",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "localhost:4000/api/users/5435345345345345",
+					"host": [
+						"localhost"
+					],
+					"port": "4000",
+					"path": [
+						"api",
+						"users",
+						"5435345345345345"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
