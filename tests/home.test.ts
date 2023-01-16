@@ -1,7 +1,7 @@
 import { createServer } from 'http';
 import { constants as httpConstants } from 'http2';
 import supertest from 'supertest';
-import { handle } from '../src/http/router/appRouter';
+import { handle } from '../src/http/handler/singleProcessModeHandler';
 import { Request } from '../src/http/Request';
 import { Response } from '../src/http/Response';
 

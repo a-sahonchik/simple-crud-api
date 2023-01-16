@@ -1,17 +1,16 @@
 import * as dotenv from 'dotenv';
-import { isApplicationRunsWithParameter } from './utils/commandLineParser';
-import { startServer } from './http/router/appRouter';
-import { startMultiServer } from './http/router/multiAppRouter';
+import { startServer } from './http/handler/singleProcessModeHandler';
+import { startMultiServer } from './http/handler/multiProcessModeHandler';
 
 dotenv.config();
 
-const isMultiApp = isApplicationRunsWithParameter('--multi') ?? false;
+const isMultiApp = process.argv.includes('--multi') ?? false;
 
 if (process.env['APP_PORT'] === undefined) {
     throw new Error('Parameter APP_PORT must be defined in .env');
 }
 
-const port = parseInt(process.env['APP_PORT']);
+const port = parseInt(process.env['APP_PORT'], 10);
 
 if (isMultiApp) {
     startMultiServer(port);

@@ -1,7 +1,7 @@
 import { constants as httpConstants } from 'http2';
 import { v4 as uuid } from 'uuid';
 import supertest from 'supertest';
-import { startServer } from '../src/http/router/appRouter';
+import { startServer } from '../src/http/handler/singleProcessModeHandler';
 import { usersDataStorage } from '../src/components/dataStorage/UsersDataStorage';
 
 const request = supertest(startServer(4001));

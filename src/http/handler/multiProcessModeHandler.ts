@@ -1,24 +1,27 @@
 import cluster from 'node:cluster';
-import { cpus } from 'os';
 import http from 'node:http';
 import url from 'node:url';
-import { startServer } from './appRouter';
+import { cpus } from 'os';
 import { shareDataStorageWithWorkers } from '../../utils/multiDataStorageHandler';
-
-const cpusCount = cpus().length;
+import { startServer } from './singleProcessModeHandler';
 
 let iteration = 0;
 
 const getNextPort = (startPort: number): number => {
-    iteration = iteration === cpusCount ? 1 : iteration + 1;
+    if (iteration === cpus().length) {
+        iteration = 1;
+    } else {
+        iteration += 1;
+    }
 
     return startPort + iteration;
 };
 
-const startLoadBalancerServer = (port: number) => {
+const listenLoadBalancerServer = (port: number) => {
     const loadBalancerServer = http.createServer((request, response) => {
         const nextPort = getNextPort(port);
 
+        // eslint-disable-next-line no-console
         console.log(`Proxying request ${request.method} ${request.url} to port ${nextPort}.`);
 
         if (request.url === undefined) {
@@ -43,10 +46,11 @@ const startLoadBalancerServer = (port: number) => {
     loadBalancerServer.listen(port);
 };
 
-const startPrimaryServer = (port: number): void => {
+const startMainServer = (port: number): void => {
+    // eslint-disable-next-line no-console
     console.log(`Main process is running on port ${port}. Starting workers. please wait...`);
 
-    for (let i = 0; i < cpusCount; i += 1) {
+    for (let i = 0; i < cpus().length; i += 1) {
         cluster.fork();
     }
 
@@ -56,7 +60,7 @@ const startPrimaryServer = (port: number): void => {
 
     shareDataStorageWithWorkers();
 
-    startLoadBalancerServer(port);
+    listenLoadBalancerServer(port);
 };
 
 const startWorkerServer = (port: number) => {
@@ -65,7 +69,16 @@ const startWorkerServer = (port: number) => {
 
     startServer(workerPort);
 
+    // eslint-disable-next-line no-console
     console.log(`Worker ${workerId} running on port ${workerPort}.`);
 };
 
-export { startPrimaryServer, startWorkerServer };
+const startMultiServer = (port: number): void => {
+    if (cluster.isPrimary) {
+        startMainServer(port);
+    } else {
+        startWorkerServer(port);
+    }
+};
+
+export { startMultiServer };

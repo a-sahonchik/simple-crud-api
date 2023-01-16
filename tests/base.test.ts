@@ -1,6 +1,6 @@
 import { constants as httpConstants } from 'http2';
 import supertest from 'supertest';
-import { startServer } from '../src/http/router/appRouter';
+import { startServer } from '../src/http/handler/singleProcessModeHandler';
 
 const request = supertest(startServer(4000));
 

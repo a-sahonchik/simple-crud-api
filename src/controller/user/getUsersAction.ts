@@ -1,6 +1,6 @@
 import { constants as httpConstants } from 'node:http2';
 import { usersDataStorage } from '../../components/dataStorage/UsersDataStorage';
-import { ActionHandler } from '../../http/ActionHandler';
+import { ActionHandler } from '../../types/ActionHandler';
 import { Request } from '../../http/Request';
 import { Response } from '../../http/Response';
 

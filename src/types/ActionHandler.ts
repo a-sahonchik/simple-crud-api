@@ -1,5 +1,5 @@
-import { Request } from './Request';
-import { Response } from './Response';
+import { Request } from '../http/Request';
+import { Response } from '../http/Response';
 
 type ActionHandler = (request: Request, response: Response) => void;
 

@@ -1,6 +1,5 @@
-import { ActionHandler } from './ActionHandler';
-import { Endpoint } from './Endpoint';
-import { HttpRequestMethod } from '../components/constants/HttpRequestMethod';
+import { ActionHandler } from '../types/ActionHandler';
+import { Endpoint } from '../types/Endpoint';
 
 class Router {
     private readonly endpoints: Endpoint[];
@@ -11,12 +10,6 @@ class Router {
 
     public getEndpoints(): Endpoint[] {
         return this.endpoints;
-    }
-
-    public findEndpointByPathAndMethod(path: string, method: HttpRequestMethod): Endpoint | undefined {
-        const endpoint = this.endpoints.find((e) => e.path === path && e.method === method);
-
-        return endpoint;
     }
 }
 

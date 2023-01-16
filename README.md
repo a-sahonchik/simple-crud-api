@@ -46,6 +46,8 @@ App is available on http://localhost:4000/api
    npm run start:multi
    ```
 
+  Please, when running app in multi mode, wait until all workers start. Progress can be seen in the terminal. Also in terminal you can see to which ports requests are forwarded to.
+
 ---
 
 ## How to test
@@ -60,16 +62,14 @@ App is available on http://localhost:4000/api
 
 * ### To analyze code without fixing
 
-   ```bash
-   npm run lint
-   ```
+```bash
+# To analyze code without fixing
+npm run lint
 
-* ### To analyze code and fix all possible errors
+# To analyze code and fix all possible errors
+npm run lint:fix
+```
 
-   ```bash
-   npm run lint:fix
-   ```
-  
 ---
 
 ## Postman collection
